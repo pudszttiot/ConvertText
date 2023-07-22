@@ -38,29 +38,26 @@ def convert_to_cases():
     title_output_box.delete(0, tk.END)
     title_output_box.insert(0, text.title())
     random_output_box.delete(0, tk.END)
-    random_text = ""
-    for char in text:
-        if random.choice([True, False]):
-            random_text += char.upper()
-        else:
-            random_text += char.lower()
+    random_text = "".join(
+        char.upper() if random.choice([True, False]) else char.lower()
+        for char in text
+    )
     random_output_box.insert(0, random_text)
     reverse_output_box.delete(0, tk.END)
     reverse_output_box.insert(0, text[::-1])
     backwards_output_box.delete(0, tk.END)
     backwards_output_box.insert(0, " ".join(text.split()[::-1]))
     phonetic_output_box.delete(0, tk.END)
-    phonetic_text = ""
-    for char in text:
-        if char.upper() in nato_phonetic_alphabet:
-            phonetic_text += nato_phonetic_alphabet[char.upper()] + " "
-        else:
-            phonetic_text += char + " "
+    phonetic_text = "".join(
+        f"{nato_phonetic_alphabet[char.upper()]} "
+        if char.upper() in nato_phonetic_alphabet
+        else f"{char} "
+        for char in text
+    )
     phonetic_output_box.insert(0, phonetic_text.strip())
 
     # Convert to 1337 (Leet Speak)
     leet_output_box.delete(0, tk.END)
-    leet_text = ""
     leet_dict = {
         'A': '4',
         'B': '8',
@@ -72,11 +69,7 @@ def convert_to_cases():
         'T': '7',
         'Z': '2'
     }
-    for char in text:
-        if char.upper() in leet_dict:
-            leet_text += leet_dict[char.upper()]
-        else:
-            leet_text += char
+    leet_text = "".join(leet_dict.get(char.upper(), char) for char in text)
     leet_output_box.insert(0, leet_text)
 
 # Create the main window
